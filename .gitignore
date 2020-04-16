@@ -1,7 +1,11 @@
 *.DS_Store
 
+## Big files related to notebooks
 */fing_x_fing/*
+*/fprdata/*
+*/fprmodules/*
 
+## Big files related to literature
 /notes/*
 /literature/notes/*
 
