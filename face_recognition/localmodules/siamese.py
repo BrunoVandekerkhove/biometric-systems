@@ -69,15 +69,15 @@ def get_siamese_paired_data(X, y, total_sample_size = 1000):
     """
         Create batch of n pairs, half same class, half different class
     """
-    
+    print("wow")
     assert len(X.shape) == 4, "Expected format for X: (n_samples, height, width, channels)"
     
-    n_samples, height, width, channels = X.shape
+    n_samples, width, height, channels = X.shape
     n_classes = np.unique(y).shape[0]
     
     
     # randomly sample classes 
-    categories = rng.choice(n_classes,size=(2*total_sample_size,),replace=True)
+    categories = rng.choice(n_classes,size=(2*total_sample_size,),replace=True) # range, number of random numbers
 
     genuine_pairs=np.zeros((total_sample_size, 2, width, height, channels))
     imposter_pairs=np.zeros((total_sample_size, 2, width, height, channels))
