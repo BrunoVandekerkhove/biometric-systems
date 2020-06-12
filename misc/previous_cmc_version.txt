@@ -1,0 +1,53 @@
+def CMC(similarity_matrix, nb_people=10, nb_samples=8):
+  """
+  Calculate the Cumulative Matching Characteristic curve.
+  N.B. I consider the first picture for every person the 'template'.
+    So I check for each non-template how it ranks that template.
+  """
+  def get_gallery(i):
+    """Helper function to calculate the gallery."""
+    return (i-(i%nb_samples)), [nb_samples * t for t in range(0,nb_people)]
+    #return (i-(i%nb_samples)), [s for s in range(80) if s == template or s // 8 != i // 8]
+  n_ranks = len(get_gallery(0)[1])
+  cmc = [0] * n_ranks
+  considered = 0
+  for (i,row) in enumerate(similarity_matrix):
+    if i % 8 > 0:
+      considered = considered + 1
+      template, gallery = get_gallery(i)
+      template_scores = [row[t] for t in gallery]
+      rank = sorted(template_scores, reverse=True).index(row[template])
+      if rank < n_ranks:
+        cmc[rank] += 1
+  prev = 0
+  for r in range(n_ranks):
+    prev = cmc[r] + prev
+    cmc[r] = prev / considered
+  return cmc
+
+def plot_cmc(similarity_matrix, color=(0,1,0), label='', axes=None):
+  """Plot the CMC curve for the given similarity matrix."""
+  cmc = CMC(similarity_matrix)
+  if axes is None:
+    figure, axes = plt.subplots(ncols=1, figsize=(16,4))
+    figure.suptitle('CMC Curve')
+    axes.plot(list(range(1,len(cmc)+1)), cmc, color=color, lw=1, label=label)
+    axes.set(xlabel='Rank', ylabel='Retrieval Rate')
+    axes.legend()
+    plt.show()
+  else:
+    axes.plot(list(range(1,len(cmc)+1)), cmc, color=color, lw=1, label=label)
+
+# Visualise CMC plots
+colors = plt.get_cmap("Dark2").colors
+color_idx = 0
+center_plots()
+figure, axes = plt.subplots(ncols=1, figsize=(16,4))
+figure.suptitle('CMC Curve')
+for strategy in scores_dict.keys():
+  matrix, _, _ = scores_dict[strategy]
+  plot_cmc(matrix, color=colors[color_idx], label=strategy, axes=axes)
+  color_idx = color_idx + 1
+axes.set(xlabel='Rank', ylabel='Retrieval Rate')
+axes.legend()
+plt.show()
