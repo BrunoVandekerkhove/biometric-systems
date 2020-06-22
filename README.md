@@ -1,5 +1,1 @@
-Five notebooks tackling some subjects from biometrics :
-
- - Evaluation of biometric systems.
- - Fingerprint recognition.
- - Face recognition.
+Three Python notebooks toying with three facets of biometric systems are included. The first one deals with the general problem of validating and evaluating results, the second experiments with fingerprint recognition and the last one deals with face recognition. The code was run on Google Colab which provided free GPU access.
