@@ -89,13 +89,13 @@ def get_siamese_paired_data(X, y, total_sample_size = 1000):
     for i, category in enumerate(categories):
         same_category_indices = np.where(y == category)[0]
 
-        if i < total_sample_size:
+        if i < total_sample_size: # half is same pairs
             idx_1 = rng.randint(0, len(same_category_indices))
             genuine_pairs[i,0,:] = X[same_category_indices[idx_1]]
             idx_2 = rng.randint(0, len(same_category_indices))
             genuine_pairs[i,1,:] = X[same_category_indices[idx_2]] 
 
-        else:
+        else: # half is differing pairs
             diff_category_indices = np.where(y != category)[0]
 
             idx_1 = rng.randint(0, len(same_category_indices))
